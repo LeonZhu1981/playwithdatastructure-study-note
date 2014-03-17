@@ -44,6 +44,25 @@ Status InsertElem(SqList *sl, int index, ElemType e) {
 	return OK;
 }
 
+Status DeleteElem(SqList *sl, int index) {
+	if (sl->length == 0) {
+		return ERROR;
+	}
+
+	int lastIndex = sl->length - 1;
+	if (index < 0 || index > lastIndex) {
+		return ERROR;
+	}
+
+	while (index < lastIndex) {
+		sl->data[index] = sl->data[index + 1];
+		index ++;
+	}
+
+	sl->length = sl->length - 1;
+	return OK;
+}
+
 int main () {
 	SqList sl = {{1, 2, 3, 4, 5}, 5};
 	ElemType e;
@@ -66,4 +85,13 @@ int main () {
 			printf("The index:%i, value is:%i\n", i, sl.data[i]);
 		}
 	}
+
+	result = DeleteElem(&sl, newIndex);
+	if (result) {
+		printf("The Sqlist length is: %i\n", sl.length);
+		for (int i = 0; i < sl.length; i++) {
+			printf("The index:%i, value is:%i\n", i, sl.data[i]);
+		}
+	}
+
 }
