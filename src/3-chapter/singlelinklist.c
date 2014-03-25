@@ -110,6 +110,63 @@ Status DeleteList(LinkList l, int index) {
 	return OK;
 }
 
+//头插法.
+Status CreateList(LinkList *l, int count) {
+	if (count == 0) {
+		return ERROR;
+	}
+	LinkList t;
+	*l = (LinkList)malloc(sizeof(Node));
+	(*l)->next = NULL;
+
+	int index = 0;
+	while (index < count) {
+		t = (LinkList)malloc(sizeof(Node));
+		t->data = index;
+		t->next = (*l)->next;
+		(*l)->next = t;
+		index++;
+	}
+	return OK;
+}
+
+//尾茶法
+Status CreateListTail(LinkList *l, int count) {
+	if (count == 0) {
+		return ERROR;
+	}
+	LinkList p, r;
+	*l = (LinkList)malloc(sizeof(Node));
+	r = *l;
+
+	int index = 0;
+	while (index < count) {
+		p = (Node *)malloc(sizeof(Node));
+		p->data = index;
+		r->next = p;
+		r = p;
+		index++;
+	}
+	r->next = NULL;
+	return OK;
+}
+
+Status ClearList(LinkList *l) {
+	if (l == NULL) {
+		return ERROR;
+	}
+
+	LinkList p, q;
+	p = (*l)->next;
+	while (p) {
+		q = p->next;
+		free(p);
+		p = q;
+	}
+	(*l)->next = NULL;
+	return OK;
+}
+
 
 int main() {
 	Node n1, n2, n3;
@@ -162,6 +219,33 @@ int main() {
 		result = GetElem(&n1, i, &e);
 		if (result) {
 			printf("DeleteList: The %i index element is %i \n", i, e);
+		} else {
+			printf("Error\n");
+		}
+	}
+
+	LinkList *l;
+	index = 4;
+	result = CreateListTail(l, index);
+
+	if (!result) { 
+		printf("CreateList failed\n");
+	}
+
+	for (int i = 0; i < index; i++) {
+		result = GetElem(*l, i, &e);
+		if (result) {
+			printf("Create: The %i index element is %i \n", i, e);
+		} else {
+			printf("Error\n");
+		}
+	}
+
+	ClearList(l);
+	for (int i = 0; i < index; i++) {
+		result = GetElem(*l, i, &e);
+		if (result) {
+			printf("Create: The %i index element is %i \n", i, e);
 		} else {
 			printf("Error\n");
 		}
